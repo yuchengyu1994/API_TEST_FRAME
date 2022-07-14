@@ -3,9 +3,10 @@
 # @author:Yuchengyu
 # @time: 2022/7/14 0014 15:53
 import os
-from commom.excel_utils import ExcelUtils
+from common.excel_utils import ExcelUtils
+from common.config_utils import read_config
 
-test_data_path = os.path.join(os.path.dirname(__file__), '..', 'test_data/test_case.xlsx')
+test_data_path = os.path.join(os.path.dirname(__file__), '..', read_config.get_case_data_path)
 class TestDataUtils:
     def __init__(self, test_data_path=test_data_path):
         self.test_data_path = test_data_path

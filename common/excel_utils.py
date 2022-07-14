@@ -4,8 +4,9 @@
 # @time: 2022/7/14 0014 14:05
 import os
 import xlrd2
+from common.config_utils import read_config
 
-dir_path = os.path.join(os.path.dirname(__file__), '..','samples/data/test_case.xlsx')
+dir_path = os.path.join(os.path.dirname(__file__), '..',read_config.get_case_data_path)
 class ExcelUtils:
     def __init__(self,sheet_name,excel_path=dir_path):
         self.excel_path=excel_path

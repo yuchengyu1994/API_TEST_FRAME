@@ -48,3 +48,5 @@ class ExcelUtils:
 if __name__=='__main__':
     excle_utils = ExcelUtils('Sheet1')
     print(excle_utils.get_sheet_data_dict())
+    for i in excle_utils.get_sheet_data_dict():
+        print(i)

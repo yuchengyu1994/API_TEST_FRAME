@@ -1,0 +1,33 @@
+CREATE TABLE case_info(
+    case_id varchar(10),
+    case_name varchar(100) not NULL,
+    is_run varchar(4) not null DEFAULT '是',
+    PRIMARY KEY(case_id)
+)DEFAULT  CHARSET = 'utf8';
+
+CREATE TABLE case_step_info(
+    case_id VARCHAR(10) not null,
+    case_step_name VARCHAR(20) not null,
+    api_id VARCHAR(100) not null,
+    get_value_type VARCHAR(20) not null,
+    variable_name VARCHAR(20) not null,
+    get_value_code VARCHAR(100) not null,
+    excepted_result_type VARCHAR(20) not null,
+    excepted_result VARCHAR(300),
+    CONSTRAINT fk_case_id FOREIGN KEY(case_id) REFERENCES case_info(case_id)
+)DEFAULT  CHARSET = 'utf8';
+
+CREATE TABLE api_info(
+    api_id VARCHAR(100),
+    api_name VARCHAR(100),
+    api_request_type VARCHAR(10),
+    api_request_url VARCHAR(200),
+    api_url_params VARCHAR(200),
+    api_post_data VARCHAR(1000),
+    PRIMARY KEY(api_id)
+)DEFAULT  CHARSET = 'utf8';
+
+
+INSERT INTO case_info values('case01','测试能否正确执行获取access_token接口'，'是')
+INSERT INTO case_info values('case02','测试能否正确新增用户标签'，'是')
+INSERT INTO case_info values('case03','测试能否正确删除用户标签'，'是')

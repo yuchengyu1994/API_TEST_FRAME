@@ -7,12 +7,15 @@ import unittest
 from common.config_utils import read_config
 from common import HTMLTestReportCN
 from common.email_utils import EmailUtils
+from nb_log import LogManager
 
 current_path=os.path.dirname(__file__)
 test_case_path=os.path.join(current_path,'..',read_config.get_case_path)
 test_reports_path=os.path.join(current_path,'..',read_config.get_report_path)
+logger=LogManager(__file__).get_logger_and_add_handlers()
 class RunAllCase:
     def __init__(self):
+        logger.info('接口测试开始执行')
         self.test_case_path=test_case_path
         self.reports_path=test_reports_path
         self.title= '接口自动化测试报告'
@@ -26,6 +29,7 @@ class RunAllCase:
                                                        )
         all_suite=unittest.TestSuite()
         all_suite.addTest(discover)
+        logger.info('加载所有的测试模块及方法到测试套件')
         return all_suite
 
     def run(self):
@@ -35,6 +39,7 @@ class RunAllCase:
         # dir_path=HTMLTestReportCN.GlobalMsg.get_value('report_path')
         report_path = HTMLTestReportCN.GlobalMsg.get_value('report_path')
         fp =open(report_path,'wb')
+        logger.info('初始化创建测试报告路径:%s'%report_path)
         runner = HTMLTestReportCN.HTMLTestRunner(stream=fp,
                                                  title=self.title,
                                                  description=self.description,
@@ -45,4 +50,5 @@ class RunAllCase:
 
 if __name__=='__main__':
     dir_path=RunAllCase().run()
-    EmailUtils('自动化测试报告','来自python的自动化测试报告',dir_path).send_mail()
+    logger.info('测试结束')
+    EmailUtils('自动化测试报告','来自python的自动化测试报告',dir_path).zip_send_mail()

@@ -14,8 +14,10 @@ from requests.exceptions import ConnectionError
 from common.check_utils import CheckUtils
 from common.config_utils import read_config
 from common.testdata_utils import TestDataUtils
+from nb_log import LogManager
 
 
+logger=LogManager(__file__).get_logger_and_add_handlers()
 
 class RequestsUtils:
     def __init__(self):
@@ -95,8 +97,10 @@ class RequestsUtils:
                 result=self.__post(step_info)
             else:
                 result={'code':3,'result':'请求方式不支持'}
+                logger.error('请求方式不支持')
         except Exception as e:
             result = {'code':4,'result':'[%s]请求执行报系统错误，requests异常，原因是%s'%(step_info['接口名称'],e.__str__())}
+            logger.error('[%s]请求执行报系统错误，requests异常，原因是%s'%(step_info['接口名称'],e.__str__()))
         return result
 
     def requests_by_step(self,setp_infos):
@@ -104,7 +108,10 @@ class RequestsUtils:
             result= self.requests( step_info )
             # print(result)
             if result['code']!=0:
+                TestDataUtils().write_result_to_excel(step_info['测试用例编号'],step_info['测试用例步骤'],'失败')
                 break
+            else:
+                TestDataUtils().write_result_to_excel(step_info['测试用例编号'],step_info['测试用例步骤'])
         return result
 
 

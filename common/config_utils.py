@@ -45,6 +45,31 @@ class ConfigUtils:
     @property
     def get_case_path(self):
         return self.conf.get('path','case_path')
+
+    @property
+    def get_db_host(self):
+        return self.conf.get('database', 'db_host')
+
+    @property
+    def get_db_port(self):
+        return self.conf.get('database', 'db_port')
+
+    @property
+    def get_db_username(self):
+        return self.conf.get('database', 'db_username')
+
+    @property
+    def get_db_password(self):
+        return self.conf.get('database', 'db_password')
+
+    @property
+    def get_db_name(self):
+        return self.conf.get('database', 'db_name')
+
+    @property
+    def get_db_charset(self):
+        return self.conf.get('database', 'db_charset')
+
     # @property
     # def screenshot_path(self):
     #     return self.conf.get('default', 'screenshot_path')
@@ -93,7 +118,11 @@ class ConfigUtils:
 read_config=ConfigUtils()
 
 if __name__=='__main__':
-    print(read_config.get_url)
-    print(read_config.get_appid)
-    print(read_config.get_case_path)
-
+    print(read_config.get_db_charset)
+    print(read_config.get_db_name)
+    print(read_config.get_db_password)
+    print(read_config.get_db_username)
+    print(read_config.get_db_port)
+    print(read_config.get_db_host)
+    str1=read_config.get_db_charset
+    print(type(str1))

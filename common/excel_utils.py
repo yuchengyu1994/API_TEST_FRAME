@@ -56,9 +56,9 @@ class ExcelUtils:
 
 
 if __name__=='__main__':
-    excle_utils = ExcelUtils('Sheet1')
-    # print(dir_path)
-    str1=excle_utils.sheet.row(0)
-    print(str1)
-    dict1=excle_utils.get_sheet_data_dict()
-    print(dict1)
+    excle_utils = ExcelUtils('Sheet1').get_sheet_data_dict()
+    print(excle_utils)
+    # str1=excle_utils.sheet.row(0)
+    # print(str1)
+    # dict1=excle_utils.get_sheet_data_dict()
+    # print(dict1)

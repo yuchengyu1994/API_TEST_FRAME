@@ -3,6 +3,7 @@
 # @author:Yuchengyu
 # @time: 2022/7/16 0016 10:21
 import json
+import time
 
 import requests
 import ast
@@ -15,6 +16,7 @@ from common.check_utils import CheckUtils
 from common.config_utils import read_config
 from common.testdata_utils import TestDataUtils
 from nb_log import LogManager
+from common.mysql_utils import mysql_utils
 
 
 logger=LogManager(__file__).get_logger_and_add_handlers()
@@ -56,7 +58,7 @@ class RequestsUtils:
     def __post(self, post_info):
         try:
             url = self.hosts + post_info['请求地址']
-            response = self.session.get(url=url,
+            response = self.session.post(url=url,
                                         headers=self.headers,
                                         params=ast.literal_eval(post_info['请求参数(get)']),
                                         proxies=self.proxies,
@@ -85,7 +87,7 @@ class RequestsUtils:
             params_variables_list = re.findall('\\${\w+}', step_info['请求参数(get)'])
             if params_variables_list:
                 for params_variable in params_variables_list:
-                    step_info['请求参数(get)'] = step_info['请求参数(get)'].replace(params_variable,'"%s"%' % self.temp_variables.get(params_variable[2:-1]))
+                    step_info['请求参数(get)'] = step_info['请求参数(get)'].replace(params_variable,'"%s"' % self.temp_variables.get(params_variable[2:-1]))
             if step_info['请求方式'].__eq__('get'):
                 result=self.__get(step_info)
             elif step_info['请求方式'] == 'post':
@@ -93,7 +95,7 @@ class RequestsUtils:
                 if data_variables_list:
                     for data_variable in data_variables_list:
                         step_info['提交数据(post)'] = step_info['提交数据(post)'].replace(data_variable,\
-                                                '"%s"%' % self.temp_variables.get(data_variable[2:-1]))
+                                                '"%s"' % self.temp_variables.get(data_variable[2:-1]))
                 result=self.__post(step_info)
             else:
                 result={'code':3,'result':'请求方式不支持'}
@@ -106,12 +108,25 @@ class RequestsUtils:
     def requests_by_step(self,setp_infos):
         for step_info in setp_infos:
             result= self.requests( step_info )
-            # print(result)
             if result['code']!=0:
                 TestDataUtils().write_result_to_excel(step_info['测试用例编号'],step_info['测试用例步骤'],'失败')
                 break
+            # 分界线---------------
+            #还未实践，加入验证数据库的操作
+            # else:
+            #     if step_info['sql查询语句']:
+            #         if mysql_utils.query_one(step_info['sql查询语句']):
+            #             TestDataUtils().write_result_to_excel(step_info['测试用例编号'],step_info['测试用例步骤'])
+            #         else:
+            #             TestDataUtils().write_result_to_excel(step_info['测试用例编号'],step_info['测试用例步骤'],'失败')
+            #             result['code']=5
+            #             result['check_result']=False
+            #             result['message']='数据库无此数据，此条接口执行错误'
+            #     else:
+            #         TestDataUtils().write_result_to_excel(step_info['测试用例编号'], step_info['测试用例步骤'])
+            #分界线--------------------------
             else:
-                TestDataUtils().write_result_to_excel(step_info['测试用例编号'],step_info['测试用例步骤'])
+                TestDataUtils().write_result_to_excel(step_info['测试用例编号'], step_info['测试用例步骤'])
         return result
 
 

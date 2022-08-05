@@ -75,10 +75,10 @@ class TestDataUtils:
 if __name__=='__main__':
     test_data_utils=TestDataUtils()
     # test_data_utils.clear_result_to_excel()
-    test_data_utils.write_result_to_excel('case01','stp_01','失败')
+    # test_data_utils.write_result_to_excel('case01','stp_01','失败')
     # print(test_data_utils.test_data)
-    # value=test_data_utils.get_testcase_data_list()
-    # print(value)
+    value=test_data_utils.get_testcase_data_list()
+    print(value)
     # for i in value:
     #     print(i)
     # all_caes_info=test_data_utils.get_testcase_data_list()

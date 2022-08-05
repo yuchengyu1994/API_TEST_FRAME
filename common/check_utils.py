@@ -4,9 +4,7 @@
 # @time: 2022/7/19 0019 15:40
 import re
 import ast
-
 import requests
-
 from common.testdata_utils import TestDataUtils
 
 
